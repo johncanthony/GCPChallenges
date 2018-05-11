@@ -1,6 +1,6 @@
 #!/bin/bash
 gcloud -v >/dev/null || exit
 
-VPCNAME="myprivatenetwork"
+VPC_NAME="myprivatenetwork"
 
-gcloud compute networks create $VPCNAME
+gcloud compute networks create $VPC_NAME

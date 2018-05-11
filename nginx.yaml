@@ -1,0 +1,20 @@
+---
+- hosts: webserver
+  become: yes
+  become_method: sudo
+  vars:
+    http_port: 80
+    email: howdy140@gmail.com
+
+  tasks:
+    - name: update apt and install nginx
+      apt:
+        name: nginx
+        state: latest
+        update_cache: yes
+    - name: install letsencrypt client
+      apt:
+        name: python-certbot-nginx
+        state: latest
+    #- name: fetch & install LE certificate
+    #  command: /usr/bin/certbot --authenticator webroot --webroot-path /var/www/html -m {{ email }} -d 67.125.196.104.bc.googleusercontent.com --installer nginx --non-interactive
