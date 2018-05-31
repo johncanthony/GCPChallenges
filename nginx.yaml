@@ -16,5 +16,15 @@
       apt:
         name: python-certbot-nginx
         state: latest
-    #- name: fetch & install LE certificate
-    #  command: /usr/bin/certbot --authenticator webroot --webroot-path /var/www/html -m {{ email }} -d 67.125.196.104.bc.googleusercontent.com --installer nginx --non-interactive
+    - name: copy default server block
+      command: cp /etc/nginx/sites-available/default /etc/nginx/sites-available/thegreekbrit.com
+    - name: modify server block to use domain
+      command: sed -i 's/server_name _/server_name thegreekbrit\.com/g;s/# listen 443/listen 443/g' /etc/nginx/sites-available/thegreekbrit.com
+    - name: move default server block
+      command: mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
+    - name: enable new server block
+      command: ln -s /etc/nginx/sites-available/thegreekbrit.com /etc/nginx/sites-enabled/
+    - name: restart nginx
+      command: systemctl restart nginx.service
+    - name: fetch & install LE certificate
+      command: /usr/bin/certbot --authenticator webroot --webroot-path /var/www/html -m {{ email }} -d thegreekbrit.com --installer nginx --non-interactive --agree-tos
