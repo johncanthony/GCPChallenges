@@ -3,11 +3,11 @@
 # Updates $DOMAIN nameservers via Namecheap API
 # $API_USER, $API_KEY, and $NAMECHEAP_USER are stored in 'config.txt'
 ## $DOMAIN is read from CLI
-## Two (2) nameservers are read from command line, or in the file 'nameservers.txt'
-### NOTE: only the first two nameservers will be parsed
+## Four (4) nameservers are read from command line, or from the file 'nameservers.txt'
+### NOTE: only the first four nameservers will be parsed
 # 
 # SYNTAX:
-# ./associate_domain domain.tld nameserver1.tld nameserver2.tld
+# ./associate_domain domain.tld nameserver1.tld nameserver2.tld nameserver3.tld nameserver4.tld
 #
 
 API_USER=""
@@ -16,6 +16,8 @@ NAMECHEAP_USER=""
 DOMAIN=""
 NS1=""
 NS2=""
+NS3=""
+NS4=""
 
 CONFIG_FILE="config.txt"
 NS_FILE="nameservers.txt"
@@ -30,10 +32,12 @@ function help() {
 # read $NS1 and $NS2 from CLI args or from nameservers.txt
 function read_ns(args) {
 	#todo fix this
-	if [ $args.length -eq 2]
+	if [ $args.length -eq 5]
 		then
-		NS1=$args[0]
-		NS2=$args[1]
+		NS1=$args[1]
+		NS2=$args[2]
+		NS3=$args[3]
+		NS4=$args[4]
 	elif [ -f nameservers.txt ]
 		#todo fix this hack
 		source nameservers.txt
@@ -41,7 +45,7 @@ function read_ns(args) {
 	else
 		echo "reading nameservers from file..."
 		source $NS_FILE
-		if [ ! -z $NS1 -and ! -z $NS2 ]
+		if [ ! -z $NS1 -and ! -z $NS2 -and ! -z $NS3 -and ! -z $NS4 ]
 			then
 		echo "INVALID NUMBER OF NAMESERVERS" >&2
 		exit 99
@@ -88,7 +92,7 @@ function update_nameservers(api_user,api_key,username,ip,sld,tld,ns1,ns2) {
 	f_sld="SLD=$sld"
 	f_tld="TLD=$tld"
 	f_ip="ClientIp=$IP_ADDR"
-	f_ns="NameServers=$ns1,$ns2"
+	f_ns="NameServers=$ns1,$ns2,$ns3,$ns4"
 	f_api_command="Command=$api_command"
 	
 	

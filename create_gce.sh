@@ -10,6 +10,8 @@ MACHINE_TYPE="f1-micro"
 ZONE="us-east1-b"
 REGION="us-east1"
 SERVICE_ACCOUNT="sshuser"
+ZONE_DOMAIN="thegreekbrit.com"
+ZONE_NAME="tgb"
 
 gc="gcloud compute --quiet"
 
@@ -34,4 +36,35 @@ SERVER_IP="$($gc instances list\
 
 echo "[webserver]\n$GCE_NAME.$ZONE.$PROJECT" > hosts
 
+gcloud dns managed-zones create $ZONE_NAME\
+	--dns-name=$ZONE_DOMAIN\
+	--description="this is a zone"
+
+gcloud dns record-sets transaction start\
+	--zone=$ZONE_NAME
+
+gcloud dns record-sets transaction add $SERVER_IP\
+	--name=$ZONE_DOMAIN\
+	--ttl=300\
+	--type=A\
+	--zone=$ZONE_NAME
+
+gcloud dns record-sets transaction execute\
+	--zone=$ZONE_NAME
+
+gcloud dns record-sets transaction abort\
+	--zone $ZONE_NAME
+
+NS="$(gcloud dns managed-zones describe $ZONE_NAME | egrep -o 'ns.*googledomains.*\w' | tr '\n' ' ')"
+NS1=$(echo $NS | cut -d\  -f1)
+NS2=$(echo $NS | cut -d\  -f2)
+NS3=$(echo $NS | cut -d\  -f3)
+NS4=$(echo $NS | cut -d\  -f4)
+
+echo $NS1 $NS2 $NS3 $NS4
+
 $gc config-ssh
+
+#todofbust up NS into NS1/2/3/4
+sh associate_domain.sh $DOMAIN $NS1 $NS2 $NS3 $NS4
+
