@@ -6,7 +6,7 @@ GCE_NAME="myprivateinstance"
 IP_NAME="mystaticip"
 FW_NAME="ssh-http-https"
 SERVICE_ACCOUNT="sshuser"
-ZONE_NAME="tgb"
+ZONE_NAME="myzone"
 
 ZONE="us-east1-b"
 REGION="us-east1"

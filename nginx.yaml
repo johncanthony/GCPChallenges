@@ -5,26 +5,45 @@
   vars:
     http_port: 80
     email: howdy140@gmail.com
+    domain: myfirstgcpchallenge.com
+    docroot: /var/www/html
 
   tasks:
+
     - name: update apt and install nginx
       apt:
         name: nginx
         state: latest
         update_cache: yes
+
     - name: install letsencrypt client
       apt:
         name: python-certbot-nginx
         state: latest
-    - name: copy default server block
-      command: cp /etc/nginx/sites-available/default /etc/nginx/sites-available/thegreekbrit.com
-    - name: modify server block to use domain
-      command: sed -i 's/server_name _/server_name thegreekbrit\.com/g;s/# listen 443/listen 443/g' /etc/nginx/sites-available/thegreekbrit.com
-    - name: move default server block
-      command: mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
+
+    - name: create index file
+      file:
+        path: "{{ docroot }}/index.html"
+        state: touch
+      ignore_errors: yes
+
+    - name: add http server block for domain
+      template:
+        src: ./nginx-default.j2
+        dest: /etc/nginx/sites-available/{{ domain }}
+
     - name: enable new server block
-      command: ln -s /etc/nginx/sites-available/thegreekbrit.com /etc/nginx/sites-enabled/
-    - name: restart nginx
-      command: systemctl restart nginx.service
+      file:
+        src: /etc/nginx/sites-available/{{ domain }}
+        dest: /etc/nginx/sites-enabled/{{ domain }}
+        state: link
+      ignore_errors: yes
+
+    - name: reload nginx
+      systemd:
+        name: nginx
+        state: restarted
+        daemon_reload: yes
+
     - name: fetch & install LE certificate
-      command: /usr/bin/certbot --authenticator webroot --webroot-path /var/www/html -m {{ email }} -d thegreekbrit.com --installer nginx --non-interactive --agree-tos
+      command: /usr/bin/certbot --authenticator webroot --webroot-path {{ docroot }} -m {{ email }} -d {{ domain }} --installer nginx --non-interactive --agree-tos
