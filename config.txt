@@ -1,0 +1,9 @@
+#!/bin/bash
+# RENAME TO config.txt TO USE!
+# Config file for associate_domain.sh
+# source'd at runtime
+## API_USER - namecheap api user
+## API_KEY - namecheap api key
+
+API_USER="example"
+API_KEY="biglongstring"
