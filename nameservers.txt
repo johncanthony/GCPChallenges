@@ -1,0 +1,8 @@
+#!/bin/bash
+# Use this if you don't want to use associate_domain.sh via CLI
+
+DOMAIN=""
+NS1="ns1.domain.com"
+NS2="ns2.domain.com"
+NS3="ns3.domain.com"
+NS4="ns4.domain.com"
