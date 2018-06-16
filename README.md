@@ -18,9 +18,10 @@ GET /vi/api/hello_world/json
 
 POST /vi/api/math/square/$NUM1
 
-Returns JSON Object
+* Returns JSON Object
+
 { 
-  'expression' : '$NUM1 * $NUM1'
+  'expression' : '$NUM1 * $NUM1',
   'product' : '$ANS'
 }
 
@@ -28,9 +29,10 @@ Returns JSON Object
 
 POST /vi/api/math/sqrt/$NUM1
 
-Returns JSON Object
+* Returns JSON Object
+
 { 
-  'expression' : 'sqrt($NUM1)'
+  'expression' : 'sqrt($NUM1)',
   'product' : '$ANS'
 }
 
