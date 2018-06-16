@@ -4,16 +4,20 @@ Week 2:
 
 This week's project will make use of the Flask python microframework for web applications. It has a fairly easy learning curve, and is a decent choice for small web applications, and for learning more about python in general. Flask has the concept of routes, which are simply urls that are tied to functions. For this week, we're going to focus on writing a _very_ basic app, configuring a managed instance group, and deploying an http(s) loadbalancer in front of the instance group. Additionally, if you haven't already, you should get into the habit of putting all of your code and tools into some form of source control. Using source control (and making regular commits), even on a single person project, can help provide a safety net should you make a disastrous change to some code and need to revert it. Additionally, most CI/CD pipelines begin with a code repository, so using source control will be helpful there as well.
 
-API Spec
+## API Spec
 
 GET /v1/api/hello_world
+
 Returns Plain Text 'Hello World'
 
 GET /vi/api/hello_world/json
+
 Returns JSON object 
+
 { 'message' : 'hello world' }
 
 POST /vi/api/math/square/$NUM1
+
 Returns JSON Object
 { 
   'expression' : '$NUM1 * $NUM1'
@@ -22,6 +26,7 @@ Returns JSON Object
 [Note: If input is not number return the appropriate HTTP error response]
 
 POST /vi/api/math/sqrt/$NUM1
+
 Returns JSON Object
 { 
   'expression' : 'sqrt($NUM1)'
