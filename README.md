@@ -8,13 +8,13 @@ This week's project will make use of the Flask python microframework for web app
 
 GET /v1/api/hello_world
 
-Returns Plain Text 'Hello World'
+* Returns Plain Text 'Hello World'
 
 GET /vi/api/hello_world/json
 
-Returns JSON object 
+* Returns JSON object 
 
-{ 'message' : 'hello world' }
+* { 'message' : 'hello world' }
 
 POST /vi/api/math/square/$NUM1
 
@@ -23,6 +23,7 @@ Returns JSON Object
   'expression' : '$NUM1 * $NUM1'
   'product' : '$ANS'
 }
+
 [Note: If input is not number return the appropriate HTTP error response]
 
 POST /vi/api/math/sqrt/$NUM1
@@ -34,7 +35,8 @@ Returns JSON Object
 }
 
 
-This week's project:
+
+## This week's project:
 
 * In this repository, create a python app using Flask and the provided spec.
 
