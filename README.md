@@ -1,29 +1,58 @@
-# GCPChallenges
+# GCPChallenges #2
 
-The goal of this week is to learn more about GCE and VPC. Setting up and configuring a VPC and a GCE instance with a web server should help you become more familiar with VPC, Security groups, and launching and accessing GCP instances.
+Week 2:
 
-This week's project, which is due by our next session:
+This week's project will make use of the Flask python microframework for web applications. It has a fairly easy learning curve, and is a decent choice for small web applications, and for learning more about python in general. Flask has the concept of routes, which are simply urls that are tied to functions. For this week, we're going to focus on writing a _very_ basic app, configuring a managed instance group, and deploying an http(s) loadbalancer in front of the instance group. Additionally, if you haven't already, you should get into the habit of putting all of your code and tools into some form of source control. Using source control (and making regular commits), even on a single person project, can help provide a safety net should you make a disastrous change to some code and need to revert it. Additionally, most CI/CD pipelines begin with a code repository, so using source control will be helpful there as well.
 
-* Setup a VPC in GCP. Try to do this using gcloud instead of the web ui. There are a bunch of pieces that the wizard does in the web ui without telling you. Setting up manually will help you to learn about the various components needed for a VPC to work. Most of these are components that only need to be set up once for the lifetime of the VPC, so you probably won't encounter them often, but knowing about them can help with troubleshooting later on.
+API Spec
 
-* Launch a GCE instance (you can and should use whichever instance type is included in the GCP free tier) inside the VPC you created. Allow both http and https traffic. Ensure you have set the ip as a static ip.
+GET /v1/api/hello_world
+Returns Plain Text 'Hello World'
 
-* Write an ansible playbook to install and configure nginx on an instance, including fetching a certificate from Let's Encrypt. The playbook should be able to take a fresh-out-of-the-wrapper GCE instance, and when it is done, have nginx serving HTTP and HTTPS with a Let's Encrypt certificate.
+GET /vi/api/hello_world/json
+Returns JSON object 
+{ 'message' : 'hello world' }
+
+POST /vi/api/math/square/$NUM1
+Returns JSON Object
+{ 
+  'expression' : '$NUM1 * $NUM1'
+  'product' : '$ANS'
+}
+[Note: If input is not number return the appropriate HTTP error response]
+
+POST /vi/api/math/sqrt/$NUM1
+Returns JSON Object
+{ 
+  'expression' : 'sqrt($NUM1)'
+  'product' : '$ANS'
+}
 
 
-Deliverables:
+This week's project:
 
-Bash script containing all of the GCloud Commands for VPC creation
+* In this repository, create a python app using Flask and the provided spec.
 
-Bash Script containing all of the GCloud Commands for GCE creation and attaching
-to VPC
+* Create a bash script or CM management tool (your choice) config to build a Managed Instance group and HTTP(S) Loadbalancer
 
-Ansible Playbook for nginx with TLS configuration
+** The route will be for root (/), and should be something other than the Hello World example on the Flask website. Content is your choice.
 
-How To Deliver:
+** Commit your code to the repo frequently. Once you are satisfied with your work, create a Pull Request to merge the changes into the original bootcamp repository that you forked from me. I will review your code and provide feedback on what can be improved upon.
 
-Fork this repo
-Create a branch with your username and challenge number (userName_challenge_X)
-add a directory containing the deliverable files
-Create a pull request to submit to the new branch
+* Show how you would TLS terminate in two configurations: 
+1) HTTP(S) TLS Termination 
+2) TLS Termination in the instances in the Managed instance group
 
+* Test that you can access the app from the ip.
+
+* Create an instance template that uses the instance your application is running on as its reference.
+
+* Create a zonal managed instance group that uses your template. Enable autoscaling.
+
+* Create an https load balancer
+
+* Ensure that you can reach the app using either http or https. Flask Documentation: http://flask.pocoo.org/ Creating Pull Requests: https://help.github.com/articles/creating-a-pull-request/
+
+Bonus points:
+
+* Use Deployment Manager to configure and deploy the load balancer
